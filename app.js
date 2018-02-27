@@ -7,14 +7,22 @@ const MongoClient = require('mongodb').MongoClient;
 const ObjectID = require('mongodb').ObjectID;
 const util = require("util");
 const peupler = require("./mes_modules/peupler");
+const cookieParser = require('cookie-parser')
 app.use(express.static('public'));
 app.use(bodyParser.urlencoded({extended: true}));
 app.set('view engine', 'ejs'); // générateur de template
+app.use(cookieParser())
 const i18n = require("i18n");
 /* Ajouter l'objet i18n à l'objet global «res» */
 app.use(i18n.init);
 
-app.get('/en', (req, res) => {
+i18n.configure({ 
+   locales : ['fr', 'en'],
+   cookie : 'langueChoisie', 
+   directory : __dirname + '/locales' 
+})
+
+/*app.get('/en', (req, res) => {
 // 'en' est enregistré comme langue
 res.setLocale('en')
 // on en profite pour sauver la langue dans un cookie
@@ -23,9 +31,19 @@ res.cookie('moncookie', 'en');
 console.log('res.getCatalog() = ' + res.getCatalog())
 // retourne la langue qui a été choisie
 console.log('res.getLocale() = ' + res.getLocale())
-var bienvenue = 'hello';
-console.log('en= ' + res.__('bienvenue'))
+let bienvenue = 'hello';
+//console.log('en= ' + res.__('bienvenue')
+res.render('accueil.ejs')
 
+});*/
+
+app.get('/:locale(en|fr)', function(req, res){
+	// on récupère le paramètre de l'url pour enregistrer la langue
+  res.setLocale(req.params.locale)
+  // on peut maintenant traduire
+  console.log(res.__('bonjour'))
+  console.log(res.__('maison'))
+  res.render('accueil.ejs')
 });
 
 app.get('/accueil', (req, res) => {
