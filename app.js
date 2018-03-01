@@ -22,29 +22,14 @@ i18n.configure({
    directory : __dirname + '/locales' 
 })
 
-/*app.get('/en', (req, res) => {
-// 'en' est enregistré comme langue
-res.setLocale('en')
-// on en profite pour sauver la langue dans un cookie
-res.cookie('moncookie', 'en');
-// retourne le catalogue
-console.log('res.getCatalog() = ' + res.getCatalog())
-// retourne la langue qui a été choisie
-console.log('res.getLocale() = ' + res.getLocale())
-let bienvenue = 'hello';
-//console.log('en= ' + res.__('bienvenue')
-res.render('accueil.ejs')
-
-});*/
-
 app.get('/:locale(en|fr)', function(req, res){
 	// on récupère le paramètre de l'url pour enregistrer la langue
+  res.cookie('langueChoisie' , req.params.locale)
   res.setLocale(req.params.locale)
   // on peut maintenant traduire
-  console.log(res.__('bonjour'))
-  console.log(res.__('maison'))
-  res.render('accueil.ejs')
-});
+
+  res.redirect(req.get('referer'))
+})
 
 app.get('/accueil', (req, res) => {
  res.render('accueil.ejs');
