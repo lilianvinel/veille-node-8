@@ -1,5 +1,16 @@
+<%
+
+if(locale == 'fr'){
+  locale ='en'
+}else{
+	locale = 'fr'
+}
+
+%>
+
 <ul>
-  <li><a href="/accueil">Accueil</a></li>
-  <li><a href="/adresses">Membres</a></li>
-  <li><a href="/rechercher">Profil</a></li>
+  <li><a href="/accueil"><%=__('Accueil') %></a></li>
+  <li><a href="/adresses"><%=__('Membres') %></a></li>
+  <li><a href="/rechercher"><%=__('Profil') %></a></li>
+  <li><a class="langues" href="/<%= locale %>"><%=__('En') %></a></li>
 </ul>
